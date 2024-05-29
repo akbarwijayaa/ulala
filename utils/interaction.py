@@ -27,7 +27,7 @@ def check_transaction_status(web3_client, txn_hash, function_name) -> int:
             if txn_receipt is not None:
                 print(f"Success trx: {function_name}")
                 break
-#             time.sleep(5)
+            time.sleep(3)
         except Exception as e:
             print(f"Error checking transaction status {e}")
 #     return int(txn_receipt["status"])

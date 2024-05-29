@@ -38,9 +38,9 @@ lz_value = env["lz_value"]
 lz_value_burn = env["lz_value_burn"]
 lz_value_wd = env["lz_value_wd"]
 
-default_gas = 2000000 + random.randint(1, 100)
+default_gas = 4000000 + random.randint(1, 100)
 default_gas_price = web3_client.eth.gas_price
-default_gas_price = Web3.to_wei("50", "gwei")
+default_gas_price = Web3.to_wei("1.6", "gwei")
 
 
 while True:
@@ -175,4 +175,23 @@ while True:
         gas_price=default_gas_price,
         lz_value=lz_value_burn
     )
+
     time.sleep(1.5)
+    interact(
+    web3_client=web3_client, 
+    contract_address=main_contract_address, 
+    function_name="withdrawCollateral", 
+    abi=main_abi, 
+    account_address=account_address, 
+    private_key=private_key, 
+    function_args=(
+                "0x4545544800000000000000000000000000000000000000000000000000000000",
+                10000000000000000,
+                "0x4c617965725a65726f0000000000000000000000000000000000000000000000",
+                0,
+                False,
+    ),
+    gas=default_gas,
+    gas_price=default_gas_price,
+    lz_value=lz_value_wd
+)
