@@ -38,3 +38,17 @@ Success trx: faucetToken
 Success trx: approve
 Success trx: issueSynths
 ``` 
+
+## Edit the Delay (Optional)
+You can edit the delay between commands in `app.py` by modifying lines 42-43:
+```python
+rdm_delay = 30  # Input random delay in seconds
+rdm_delta = 5   # Input the maximum deviation from the delay
+````
+
+## Loop in Linux
+If you want to run the script on your Linux server and automatically re-run it after an error or failure, follow these steps:
+````bash
+$ chmod +x loop.sh
+$ ./loop.sh
+````
