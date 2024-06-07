@@ -39,6 +39,8 @@ default_gas = 4000000 + random.randint(1, 100)
 default_gas_price = web3_client.eth.gas_price
 default_gas_price = Web3.to_wei("1.6", "gwei")
 
+rdm_delay = 30 # input random delay in seconds
+rdm_delta = 5 # input the maximum deviation from the delay
 
 while True:
     # Claim Faucet
@@ -54,7 +56,11 @@ while True:
         gas_price=default_gas_price
     )
 
-    time.sleep(random.randrange(5, 14))
+    # Display countdown
+    delay = random.randint(rdm_delay - rdm_delta, rdm_delay + rdm_delta)
+    for delay_action in range(delay, 0, -1):
+        print(f"Waiting {delay_action} seconds...", end="\r")
+        time.sleep(1)
     # Approve transactions
     interact(
         web3_client=web3_client, 
@@ -71,7 +77,11 @@ while True:
         gas_price=default_gas_price
     )
 
-    time.sleep(random.randrange(5, 14))
+    # Display countdown
+    delay = random.randint(rdm_delay - rdm_delta, rdm_delay + rdm_delta)
+    for delay_action in range(delay, 0, -1):
+        print(f"Waiting {delay_action} seconds...", end="\r")
+        time.sleep(1)
     # # Add Collateral
     interact(
         web3_client=web3_client, 
@@ -92,7 +102,11 @@ while True:
         gas_price=default_gas_price
     )
 
-    time.sleep(random.randrange(5, 14))
+    # Display countdown
+    delay = random.randint(rdm_delay - rdm_delta, rdm_delay + rdm_delta)
+    for delay_action in range(delay, 0, -1):
+        print(f"Waiting {delay_action} seconds...", end="\r")
+        time.sleep(1)
     # # Mint syUSD
     issue_amount = int(1e18 * 10_000) + random.randint(
             0, int(1e8)
@@ -116,7 +130,11 @@ while True:
         gas_price=default_gas_price
     )
 
-    time.sleep(random.randrange(5, 14))
+    # Display countdown
+    delay = random.randint(rdm_delay - rdm_delta, rdm_delay + rdm_delta)
+    for delay_action in range(delay, 0, -1):
+        print(f"Waiting {delay_action} seconds...", end="\r")
+        time.sleep(1)
     # # Same chain swap
     eth_usd_chainlink_feed = "0xd30e2101a97dcbAeBCBC04F14C3f624E67A35165"
     eth_usd_price_raw = read_function_from_contract(
@@ -149,7 +167,11 @@ while True:
         gas_price=default_gas_price
     )
 
-    time.sleep(random.randrange(5, 14))
+    # Display countdown
+    delay = random.randint(rdm_delay - rdm_delta, rdm_delay + rdm_delta)
+    for delay_action in range(delay, 0, -1):
+        print(f"Waiting {delay_action} seconds...", end="\r")
+        time.sleep(1)
     # Burn syUSD
     interact_burn(
         web3_client=web3_client, 
@@ -167,7 +189,11 @@ while True:
         gas_price=default_gas_price
     )
 
-    time.sleep(random.randrange(5, 14))
+    # Display countdown
+    delay = random.randint(rdm_delay - rdm_delta, rdm_delay + rdm_delta)
+    for delay_action in range(delay, 0, -1):
+        print(f"Waiting {delay_action} seconds...", end="\r")
+        time.sleep(1)
     # Withdraw Collateral
     interact(
         web3_client=web3_client, 
@@ -186,9 +212,13 @@ while True:
         gas=default_gas,
         gas_price=default_gas_price
     )
-    time.sleep(random.randrange(5, 14))
 
-    # time.sleep(random.randrange(5, 14))
+    # Display countdown
+    delay = random.randint(rdm_delay - rdm_delta, rdm_delay + rdm_delta)
+    for delay_action in range(delay, 0, -1):
+        print(f"Waiting {delay_action} seconds...", end="\r")
+        time.sleep(1)
+
     # # Cross Chain Swap
     # interact_bridge(
     #     web3_client=web3_client, 
@@ -208,8 +238,12 @@ while True:
     #     ),
     #     lz_value = random.uniform(0.054635336392467048, 0.058635336392467048)
     # )
-    
-    # time.sleep(random.randrange(5, 14))
+
+    # # Display countdown
+    # delay = random.randint(rdm_delay - rdm_delta, rdm_delay + rdm_delta)
+    # for delay_action in range(delay, 0, -1):
+    #     print(f"Waiting {delay_action} seconds...", end="\r")
+    #     time.sleep(1)
     # # Bridge
     # bridge_amount = int(10 * 1e18)
     # interact_bridge(
@@ -229,3 +263,8 @@ while True:
     #     ),
     #     lz_value=random.uniform(0.054635336392467048, 0.058635336392467048)
     # )
+    # # Display countdown
+    # delay = random.randint(rdm_delay - rdm_delta, rdm_delay + rdm_delta)
+    # for delay_action in range(delay, 0, -1):
+    #     print(f"Waiting {delay_action} seconds...", end="\r")
+    #     time.sleep(1)
