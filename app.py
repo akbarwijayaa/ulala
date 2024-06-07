@@ -5,7 +5,7 @@ import time
 import random
 
 from utils.open_abi import read_abi
-from utils.interaction import interact, read_function_from_contract
+from utils.interaction import interact, interact_bridge, interact_burn, read_function_from_contract
 
 from web3 import Web3, AsyncWeb3
 from web3.gas_strategies.rpc import rpc_gas_price_strategy
@@ -34,9 +34,6 @@ web3_client.eth.set_gas_price_strategy(
 )
 
 faucet_ammount = env["synthr_faucet_token_amount"]
-lz_value = env["lz_value"]
-lz_value_burn = env["lz_value_burn"]
-lz_value_wd = env["lz_value_wd"]
 
 default_gas = 4000000 + random.randint(1, 100)
 default_gas_price = web3_client.eth.gas_price
@@ -52,13 +49,12 @@ while True:
         abi=faucet_abi, 
         account_address=account_address,
         private_key=private_key,
-        function_args=(faucet_ammount,), 
-        gas=default_gas, 
-        gas_price=default_gas_price,
-        lz_value=lz_value_burn
+        function_args=(faucet_ammount,),
+        gas=default_gas,
+        gas_price=default_gas_price
     )
 
-    time.sleep(1.5)
+    time.sleep(random.randrange(5, 14))
     # Approve transactions
     interact(
         web3_client=web3_client, 
@@ -70,13 +66,12 @@ while True:
         function_args=(
             main_contract_address, 
             115792089237316195423570985008687907853269984665640564039457584007913129639935,
-            ), 
-        gas=default_gas, 
-        gas_price=default_gas_price, 
-        lz_value=lz_value_burn
+        ),
+        gas=default_gas,
+        gas_price=default_gas_price
     )
 
-    time.sleep(1.5)
+    time.sleep(random.randrange(5, 14))
     # # Add Collateral
     interact(
         web3_client=web3_client, 
@@ -92,13 +87,12 @@ while True:
             "0x4c617965725a65726f0000000000000000000000000000000000000000000000",
             0,
             False,
-        ), 
+        ),
         gas=default_gas,
-        gas_price=default_gas_price,
-        lz_value=lz_value_burn
+        gas_price=default_gas_price
     )
 
-    time.sleep(1.5)
+    time.sleep(random.randrange(5, 14))
     # # Mint syUSD
     issue_amount = int(1e18 * 10_000) + random.randint(
             0, int(1e8)
@@ -113,17 +107,16 @@ while True:
         function_args=(
                     "0x0000000000000000000000000000000000000000000000000000000000000000",
                     0,
-                    issue_amount,
+                    10000000000000000000000,
                     "0x4c617965725a65726f0000000000000000000000000000000000000000000000",
                     0,
                     False,
         ),
         gas=default_gas,
-        gas_price=default_gas_price,
-        lz_value=lz_value_burn
+        gas_price=default_gas_price
     )
 
-    time.sleep(1.5)
+    time.sleep(random.randrange(5, 14))
     # # Same chain swap
     eth_usd_chainlink_feed = "0xd30e2101a97dcbAeBCBC04F14C3f624E67A35165"
     eth_usd_price_raw = read_function_from_contract(
@@ -153,13 +146,12 @@ while True:
                     False,
         ),
         gas=default_gas,
-        gas_price=default_gas_price,
-        lz_value=lz_value
+        gas_price=default_gas_price
     )
 
-    time.sleep(1.5)
+    time.sleep(random.randrange(5, 14))
     # Burn syUSD
-    interact(
+    interact_burn(
         web3_client=web3_client, 
         contract_address=main_contract_address, 
         function_name="burnSynths", 
@@ -172,26 +164,68 @@ while True:
                     "0x4c617965725a65726f0000000000000000000000000000000000000000000000",
         ),
         gas=default_gas,
-        gas_price=default_gas_price,
-        lz_value=lz_value_burn
+        gas_price=default_gas_price
     )
 
-    time.sleep(1.5)
+    time.sleep(random.randrange(5, 14))
+    # Withdraw Collateral
     interact(
-    web3_client=web3_client, 
-    contract_address=main_contract_address, 
-    function_name="withdrawCollateral", 
-    abi=main_abi, 
-    account_address=account_address, 
-    private_key=private_key, 
-    function_args=(
-                "0x4545544800000000000000000000000000000000000000000000000000000000",
-                10000000000000000,
-                "0x4c617965725a65726f0000000000000000000000000000000000000000000000",
-                0,
-                False,
-    ),
-    gas=default_gas,
-    gas_price=default_gas_price,
-    lz_value=lz_value_wd
-)
+        web3_client=web3_client, 
+        contract_address=main_contract_address, 
+        function_name="withdrawCollateral", 
+        abi=main_abi, 
+        account_address=account_address, 
+        private_key=private_key, 
+        function_args=(
+                    "0x4545544800000000000000000000000000000000000000000000000000000000",
+                    10000000000000000,
+                    "0x4c617965725a65726f0000000000000000000000000000000000000000000000",
+                    0,
+                    False,
+        ),
+        gas=default_gas,
+        gas_price=default_gas_price
+    )
+    time.sleep(random.randrange(5, 14))
+
+    # time.sleep(random.randrange(5, 14))
+    # # Cross Chain Swap
+    # interact_bridge(
+    #     web3_client=web3_client, 
+    #     contract_address=main_contract_address, 
+    #     function_name="exchangeAtomically", 
+    #     abi=main_abi, 
+    #     account_address=account_address, 
+    #     private_key=private_key, 
+    #     function_args=(
+    #                 "0x7355534400000000000000000000000000000000000000000000000000000000",
+    #                 100000000000000000000,  # 100 sUSD
+    #                 "0x7355534400000000000000000000000000000000000000000000000000000000",
+    #                 99800000000000000000,
+    #                 "0x4c617965725a65726f0000000000000000000000000000000000000000000000",
+    #                 10106,
+    #                 True,
+    #     ),
+    #     lz_value = random.uniform(0.054635336392467048, 0.058635336392467048)
+    # )
+    
+    # time.sleep(random.randrange(5, 14))
+    # # Bridge
+    # bridge_amount = int(10 * 1e18)
+    # interact_bridge(
+    #     web3_client=web3_client, 
+    #     contract_address=bridge_contract, 
+    #     function_name="bridgeSynth", 
+    #     abi=bridge_abi, 
+    #     account_address=account_address, 
+    #     private_key=private_key, 
+    #     function_args=(
+    #                 account_address,
+    #                 "0x7355534400000000000000000000000000000000000000000000000000000000",
+    #                 10000000000000000000,  # 10 sUSD
+    #                 "0x4c617965725a65726f0000000000000000000000000000000000000000000000",
+    #                 10106,
+    #                 False,
+    #     ),
+    #     lz_value=random.uniform(0.054635336392467048, 0.058635336392467048)
+    # )
