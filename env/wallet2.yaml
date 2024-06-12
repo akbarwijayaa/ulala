@@ -1,0 +1,11 @@
+account_address: # isi dgn address kalian
+private_key: # isi dgn private key kalian
+
+arbitrum_sepolia_url: # isi dgn url arb sepolia kalian, generate pake alchemy
+arbitrum_sepolia_chain_id: 421611
+
+synthr_faucet_token_amount: 2000000000000000000 # 2eETH
+
+faucet_address: "0xfb2c2196831DeEb8311d2CB4B646B94Ed5eCF684"
+main_contract_address: "0xe0875CBD144Fe66C015a95E5B2d2C15c3b612179"
+bridge_contract: "0x2F1673beD3E85219E2B01BC988ABCc482261c38c"
