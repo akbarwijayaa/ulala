@@ -42,8 +42,9 @@ Success trx: issueSynths
 ## Edit the Delay (Optional)
 You can edit the delay between commands in `app.py` by modifying lines 42-43:
 ```python
-rdm_delay = 30  # Input random delay in seconds
-rdm_delta = 5   # Input the maximum deviation from the delay
+rdm_delay = 30        # Input random delay in seconds
+rdm_delta = 5         # Input the maximum deviation from the delay
+delay_multiplier = 30 # input the delay multiplier between iteration
 ````
 
 ## Loop in Linux
